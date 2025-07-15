@@ -2,10 +2,10 @@
 FROM python:3.9-slim
 
 # Set the working directory inside the container
-WORKDIR /scrapper_india
+WORKDIR /app
 
 # Copy the current directory contents into the container at /scrapper_india
-COPY . /scrapper_india
+COPY . /app
 
 # Install the necessary dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -24,8 +24,8 @@ RUN pip install google-cloud-storage flask flask-cors deep-translator requests p
 # Expose port 5000 to allow communication to/from the container
 EXPOSE 5000
 
-# Set environment variables (if needed)
-ENV GOOGLE_APPLICATION_CREDENTIALS="/home/user/Beyond-The-Obvious/qwiklabs-gcp-01-cfd16ed884e1-0e960a8d0bf1.json"
+# Set environment variable for Google Cloud service account key (if needed)
+ENV GOOGLE_APPLICATION_CREDENTIALS="/app/service-account-key.json"
 
 # Run the Flask app when the container launches
 CMD ["python", "scrapper_india.py"]
