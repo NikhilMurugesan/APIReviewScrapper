@@ -1,0 +1,31 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /scrapper_india
+
+# Copy the current directory contents into the container at /scrapper_india
+COPY . /scrapper_india
+
+# Install the necessary dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Google Cloud SDK (for gsutil and authentication)
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+    && echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
+    && apt-get update && apt-get install -y google-cloud-sdk
+
+# Install the necessary libraries for the application
+RUN pip install google-cloud-storage flask flask-cors deep-translator requests pandas
+
+# Expose port 5000 to allow communication to/from the container
+EXPOSE 5000
+
+# Set environment variables (if needed)
+ENV GOOGLE_APPLICATION_CREDENTIALS="/home/user/Beyond-The-Obvious/qwiklabs-gcp-01-cfd16ed884e1-0e960a8d0bf1.json"
+
+# Run the Flask app when the container launches
+CMD ["python", "scrapper_india.py"]
