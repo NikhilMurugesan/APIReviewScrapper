@@ -18,6 +18,6 @@ steps:
 images:
   - 'gcr.io/$PROJECT_ID/flask-gcs-app'
 
-# Specify the logs bucket for Cloud Build logs
+# Correct logging option to use
 options:
-  logs_bucket: "gs://mera_storage"
+  logging: CLOUD_LOGGING_ONLY
